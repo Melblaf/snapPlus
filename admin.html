@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Snap+ Admin - Envoi de code</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="snap-banner">
+                <i class="fab fa-snapchat"></i>
+                <h2>Snap+ Admin</h2>
+            </div>
+
+            <div class="disclaimer">
+                <i class="fas fa-key"></i>
+                <p>Entrez le code de vérification à envoyer aux utilisateurs via Discord.</p>
+            </div>
+
+            <div class="headline">
+                Envoyer un code de vérification 🔐
+            </div>
+
+            <div class="form-group">
+                <label>Code de vérification</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock"></i>
+                    <input type="text" id="codeInput" placeholder="Entrez le code" maxlength="10">
+                </div>
+            </div>
+
+            <button class="submit-btn" id="sendCodeBtn">
+                <i class="fas fa-paper-plane"></i> Envoyer
+            </button>
+
+            <div class="loading-screen" id="loadingScreen">
+                <div class="spinner"></div>
+                <div class="loading-text">Envoi en cours...</div>
+                <div class="loading-subtext">Publication sur Discord</div>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>Code envoyé !</h3>
+                <p>Le code a été publié sur Discord avec @everyone.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="discord.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
