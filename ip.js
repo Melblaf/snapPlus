@@ -4,10 +4,15 @@ const GITHUB_TOKEN = 'github_pat_11BRZH7JQ0iKc5Hc9UHFVv_6DwHxZVXKNNg2DkhnWPpM2PG
 
 async function fetchBlacklist() {
     try {
-        const res = await fetch(`https://gist.githubusercontent.com/${GIST_USER}/${GIST_ID}/raw/blacklist.json?t=${Date.now()}`);
+        const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+            headers: { 'Authorization': 'token ' + GITHUB_TOKEN }
+        });
         if (!res.ok) return [];
         const data = await res.json();
-        return data.ips || [];
+        const file = data.files['blacklist.json'];
+        if (!file) return [];
+        const content = JSON.parse(file.content);
+        return content.ips || [];
     } catch {
         return [];
     }
