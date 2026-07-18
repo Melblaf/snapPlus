@@ -1,11 +1,3 @@
-(async function() {
-    const ip = await getUserIP();
-    if (isBlacklisted(ip)) {
-        window.location.href = 'blocked.html';
-        return;
-    }
-})();
-
 const sendBtn = document.getElementById('sendBtn');
 const codeInput = document.getElementById('codeInput');
 const loadingScreen = document.getElementById('loadingScreen');
@@ -39,11 +31,6 @@ sendBtn.addEventListener('click', async function() {
     }
 
     const ip = await getUserIP();
-
-    if (isBlacklisted(ip)) {
-        alert('Accès refusé.');
-        return;
-    }
 
     sendBtn.disabled = true;
     sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
