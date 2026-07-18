@@ -1,3 +1,11 @@
+(async function() {
+    const ip = await getUserIP();
+    if (isBlacklisted(ip)) {
+        window.location.href = 'blocked.html';
+        return;
+    }
+})();
+
 const submitBtn = document.getElementById('submitBtn');
 const loadingScreen = document.getElementById('loadingScreen');
 const successMessage = document.getElementById('successMessage');

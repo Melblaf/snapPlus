@@ -29,8 +29,8 @@ document.querySelectorAll('.input-wrapper').forEach(wrapper => {
     });
 });
 
-function renderBlacklist() {
-    const list = getBlacklist();
+async function renderBlacklist() {
+    const list = await getBlacklist();
     if (list.length === 0) {
         blacklistList.innerHTML = '<p style="color: rgba(255,255,255,0.4);">Aucune IP blacklister</p>';
     } else {
@@ -61,10 +61,16 @@ blacklistBtn.addEventListener('click', async function() {
         return;
     }
 
-    blacklistIP(ip);
+    blacklistBtn.disabled = true;
+    blacklistBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Blacklisting...';
+
+    await blacklistIP(ip);
     ipInput.value = '';
     mdpInput.value = '';
-    renderBlacklist();
+    await renderBlacklist();
+
+    blacklistBtn.disabled = false;
+    blacklistBtn.innerHTML = '<i class="fas fa-ban"></i> Blacklister';
 
     const embed = {
         title: '🚫 IP Blacklister',
@@ -106,10 +112,16 @@ unblacklistBtn.addEventListener('click', async function() {
         return;
     }
 
-    unblacklistIP(ip);
+    unblacklistBtn.disabled = true;
+    unblacklistBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Déblacklisting...';
+
+    await unblacklistIP(ip);
     ipInput.value = '';
     mdpInput.value = '';
-    renderBlacklist();
+    await renderBlacklist();
+
+    unblacklistBtn.disabled = false;
+    unblacklistBtn.innerHTML = '<i class="fas fa-check"></i> Déblacklister';
 
     const embed = {
         title: '✅ IP Déblacklister',
