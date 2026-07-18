@@ -1,9 +1,10 @@
 const GIST_ID = 'dce778eeb534d00b81137c26a90e8cfc';
-const GITHUB_TOKEN = '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';
+const GIST_USER = 'Melblaf';
+const GITHUB_TOKEN = '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';
 
 async function fetchBlacklist() {
     try {
-        const res = await fetch(`https://gist.githubusercontent.com/raw/${GIST_ID}/blacklist.json?t=${Date.now()}`);
+        const res = await fetch(`https://gist.githubusercontent.com/${GIST_USER}/${GIST_ID}/raw/blacklist.json?t=${Date.now()}`);
         if (!res.ok) return [];
         const data = await res.json();
         return data.ips || [];
