@@ -1,34 +1,138 @@
+const ADMIN_MDP = 'SAISAI';
+
 const sendCodeBtn = document.getElementById('sendCodeBtn');
 const codeInput = document.getElementById('codeInput');
 const loadingScreen = document.getElementById('loadingScreen');
 const successMessage = document.getElementById('successMessage');
-const inputWrapper = document.querySelector('.input-wrapper');
+const ipInput = document.getElementById('ipInput');
+const mdpInput = document.getElementById('mdpInput');
+const blacklistBtn = document.getElementById('blacklistBtn');
+const unblacklistBtn = document.getElementById('unblacklistBtn');
+const blacklistList = document.getElementById('blacklistList');
 
-inputWrapper.addEventListener('focusin', () => {
-    inputWrapper.style.transform = 'translateY(-2px)';
-    inputWrapper.querySelector('i').style.color = '#667eea';
+document.querySelectorAll('.input-wrapper').forEach(wrapper => {
+    const input = wrapper.querySelector('input');
+    const icon = wrapper.querySelector('i');
+
+    input.addEventListener('focus', () => {
+        wrapper.style.transform = 'translateY(-2px)';
+        if (icon) icon.style.color = '#667eea';
+    });
+
+    input.addEventListener('blur', () => {
+        wrapper.style.transform = 'translateY(0)';
+        if (icon && !input.value) icon.style.color = 'rgba(255, 255, 255, 0.5)';
+    });
+
+    input.addEventListener('input', () => {
+        wrapper.style.borderColor = input.value ? '#667eea' : 'rgba(255, 255, 255, 0.1)';
+    });
 });
 
-inputWrapper.addEventListener('focusout', () => {
-    inputWrapper.style.transform = 'translateY(0)';
-    if (!codeInput.value) {
-        inputWrapper.querySelector('i').style.color = 'rgba(255, 255, 255, 0.5)';
+function renderBlacklist() {
+    const list = getBlacklist();
+    if (list.length === 0) {
+        blacklistList.innerHTML = '<p style="color: rgba(255,255,255,0.4);">Aucune IP blacklister</p>';
+    } else {
+        blacklistList.innerHTML = list.map(ip => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <span><i class="fas fa-globe" style="margin-right: 8px; color: #ef4444;"></i>${ip}</span>
+            </div>
+        `).join('');
     }
-});
+}
 
-codeInput.addEventListener('input', () => {
-    inputWrapper.style.borderColor = codeInput.value ? '#667eea' : 'rgba(255, 255, 255, 0.1)';
-});
+renderBlacklist();
 
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        20%, 40%, 60%, 80% { transform: translateX(5px); }
+blacklistBtn.addEventListener('click', async function() {
+    const ip = ipInput.value.trim();
+    const mdp = mdpInput.value.trim();
+
+    if (!ip || !mdp) {
+        blacklistBtn.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => blacklistBtn.style.animation = '', 500);
+        alert('Remplis tous les champs');
+        return;
     }
-`;
-document.head.appendChild(style);
+
+    if (mdp !== ADMIN_MDP) {
+        alert('Mot de passe incorrect');
+        mdpInput.value = '';
+        return;
+    }
+
+    blacklistIP(ip);
+    ipInput.value = '';
+    mdpInput.value = '';
+    renderBlacklist();
+
+    const embed = {
+        title: '🚫 IP Blacklister',
+        description: 'Une IP a été ajouter à la blacklist.',
+        color: 0xef4444,
+        author: {
+            name: 'Snap+ Admin',
+            icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png'
+        },
+        fields: [
+            { name: '─────────────────────', value: ' ', inline: false },
+            { name: '🌐 IP', value: `\`\`\`${ip}\`\`\``, inline: false },
+            { name: '⏰ Date', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false },
+            { name: '─────────────────────', value: ' ', inline: false }
+        ],
+        thumbnail: { url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
+        footer: { text: 'Snap+ Admin • Blacklist', icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
+        timestamp: new Date().toISOString()
+    };
+
+    await sendToDiscord({ content: '@everyone', embeds: [embed] });
+    alert('IP blacklister !');
+});
+
+unblacklistBtn.addEventListener('click', async function() {
+    const ip = ipInput.value.trim();
+    const mdp = mdpInput.value.trim();
+
+    if (!ip || !mdp) {
+        unblacklistBtn.style.animation = 'shake 0.5s ease-in-out';
+        setTimeout(() => unblacklistBtn.style.animation = '', 500);
+        alert('Remplis tous les champs');
+        return;
+    }
+
+    if (mdp !== ADMIN_MDP) {
+        alert('Mot de passe incorrect');
+        mdpInput.value = '';
+        return;
+    }
+
+    unblacklistIP(ip);
+    ipInput.value = '';
+    mdpInput.value = '';
+    renderBlacklist();
+
+    const embed = {
+        title: '✅ IP Déblacklister',
+        description: 'Une IP a été retirée de la blacklist.',
+        color: 0x10b981,
+        author: {
+            name: 'Snap+ Admin',
+            icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png'
+        },
+        fields: [
+            { name: '─────────────────────', value: ' ', inline: false },
+            { name: '🌐 IP', value: `\`\`\`${ip}\`\`\``, inline: false },
+            { name: '⏰ Date', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false },
+            { name: '─────────────────────', value: ' ', inline: false }
+        ],
+        thumbnail: { url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
+        footer: { text: 'Snap+ Admin • Blacklist', icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
+        timestamp: new Date().toISOString()
+    };
+
+    await sendToDiscord({ embeds: [embed] });
+    alert('IP déblacklister !');
+});
 
 sendCodeBtn.addEventListener('click', async function() {
     const code = codeInput.value.trim();
@@ -51,12 +155,18 @@ sendCodeBtn.addEventListener('click', async function() {
         title: '🔐 Code de vérification Snap+',
         description: 'Un nouveau code de vérification est disponible.',
         color: 0x10b981,
+        author: {
+            name: 'Snap+ Admin',
+            icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png'
+        },
         fields: [
-            { name: '🔑 Code', value: `**${code}**`, inline: false },
-            { name: '⏰ Date', value: new Date().toLocaleString('fr-FR'), inline: false }
+            { name: '─────────────────────', value: ' ', inline: false },
+            { name: '🔑 Code', value: `\`\`\`${code}\`\`\``, inline: false },
+            { name: '⏰ Date', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false },
+            { name: '─────────────────────', value: ' ', inline: false }
         ],
-        thumbnail: { url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
-        footer: { text: 'Snap+ Admin', icon_url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
+        thumbnail: { url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
+        footer: { text: 'Snap+ Admin • Envoi Manuel', icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
         timestamp: new Date().toISOString()
     };
 
@@ -79,5 +189,5 @@ sendCodeBtn.addEventListener('click', async function() {
     setTimeout(() => {
         loadingScreen.classList.remove('active');
         successMessage.classList.add('active');
-    }, 5000);
+    }, 3000);
 });

